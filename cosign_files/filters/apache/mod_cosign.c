@@ -335,7 +335,7 @@ cosign_handler( request_rec *r )
     }
 
     cv = cosign_cookie_valid( cfg, cookie, &rekey, &si,
-		r->connection->remote_ip, r->server );
+		r->connection->remote_host, r->server );
     if ( rekey != NULL ) {
 	/* we got a rekeyed cookie. let the request pool free it later. */
 	ap_register_cleanup( r->pool, (void *)rekey, free, ap_null_cleanup );
@@ -521,7 +521,7 @@ cosign_auth( request_rec *r )
      * Otherwise, retrieve the auth info from the server.
      */
     cv = cosign_cookie_valid( cfg, my_cookie, NULL, &si,
-		r->connection->remote_ip, r->server );
+		r->connection->remote_host, r->server );
 
     if ( cv == COSIGN_ERROR ) {
 	return( HTTP_SERVICE_UNAVAILABLE );
